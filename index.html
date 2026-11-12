@@ -1,0 +1,831 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080e13">
+<title>NAKAJOX EXPERIMENT 001 — WHERE IS THE CLOUD?</title>
+<style>
+#nx-final{max-width:1120px;margin:0 auto;min-height:100vh}
+#nx-final .p-4{padding:1.25rem} #nx-final .p-2{padding:.65rem} #nx-final .p-3{padding:.9rem} #nx-final .p-5{padding:1.5rem}
+#nx-final .mt-1{margin-top:.35rem} #nx-final .mt-2{margin-top:.6rem} #nx-final .mt-3{margin-top:.9rem} #nx-final .mt-4{margin-top:1.25rem} #nx-final .mt-5{margin-top:1.5rem} #nx-final .mt-7{margin-top:2.25rem}
+#nx-final .pt-3{padding-top:.9rem} #nx-final .pt-4{padding-top:1.25rem} #nx-final .pb-4{padding-bottom:1.25rem} #nx-final .py-3{padding-top:.9rem;padding-bottom:.9rem} #nx-final .py-5{padding-top:1.75rem;padding-bottom:1.75rem}
+#nx-final .flex{display:flex} #nx-final .grid{display:grid} #nx-final .block{display:block} #nx-final .hidden{display:none} #nx-final .inline-block{display:inline-block}
+#nx-final .flex-wrap{flex-wrap:wrap} #nx-final .items-center{align-items:center} #nx-final .justify-between{justify-content:space-between} #nx-final .justify-center{justify-content:center} #nx-final .text-center{text-align:center} #nx-final .text-right{text-align:right}
+#nx-final .gap-2{gap:.65rem} #nx-final .gap-3{gap:.9rem} #nx-final .gap-4{gap:1.25rem}
+#nx-final .grid-cols-2,#nx-final .grid-cols-3{grid-template-columns:minmax(0,1fr)} #nx-final .col-span-2{grid-column:span 2}
+#nx-final .w-full{width:100%} #nx-final .h-full{height:100%} #nx-final .max-h-56{max-height:14rem} #nx-final .max-w-lg{max-width:34rem}
+#nx-final .relative{position:relative} #nx-final .absolute{position:absolute} #nx-final .fixed{position:fixed} #nx-final .inset-0{inset:0} #nx-final .bottom-3{bottom:.75rem} #nx-final .left-3{left:.75rem} #nx-final .overflow-hidden{overflow:hidden} #nx-final .overflow-y-auto{overflow-y:auto}
+#nx-final .border{border:1px solid #30474c} #nx-final .border-t{border-top:1px solid #30474c} #nx-final .border-b{border-bottom:1px solid #30474c}
+#nx-final .text-xs{font-size:.9rem} #nx-final .text-sm{font-size:1rem} #nx-final .text-lg{font-size:1.25rem} #nx-final .text-xl{font-size:1.45rem} #nx-final .text-3xl{font-size:2.1rem} #nx-final .font-bold{font-weight:700} #nx-final .tracking-widest{letter-spacing:.1em} #nx-final .leading-5{line-height:1.65} #nx-final .leading-6{line-height:1.8} #nx-final .leading-7{line-height:1.9} #nx-final .leading-relaxed{line-height:1.65}
+#nx-final .z-50{z-index:50} #nx-final .max-w-lg{width:100%}
+@media(min-width:640px){
+  #nx-final .sm\:p-6{padding:2rem}
+  #nx-final .sm\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #nx-final .sm\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #nx-final .sm\:col-span-2{grid-column:span 2}
+  #nx-final .sm\:text-2xl{font-size:1.65rem}
+  #nx-final .sm\:text-4xl{font-size:2.6rem}
+}
+</style>
+</head>
+<body style="margin:0;background:#080e13;color:#e6f0ee">
+<div id="nx-final" class="w-full" style="background:#080e13;color:#e6f0ee;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace">
+<style>
+#nx-final *{box-sizing:border-box}
+#nx-final h1,#nx-final h2,#nx-final h3,#nx-final h4{background:transparent!important;margin:0}
+#nx-final p{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif}
+#nx-final button{appearance:none;-webkit-appearance:none;background-color:#0c171c;color:#e6f0ee;cursor:pointer;font-family:inherit}
+#nx-final .muted{color:#9fb3b7}
+#nx-final .cyan{color:#79dfe4}
+#nx-final .amber{color:#e8b16f}
+#nx-final .panel{background:linear-gradient(145deg,#122027,#0a1318);border:1px solid #30474c}
+#nx-final .tiny{font-size:11px;letter-spacing:.14em;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+#nx-final .section{border-top:1px solid #30474c;padding-top:28px;margin-top:34px}
+#nx-final .help{appearance:none;-webkit-appearance:none;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;border:1px solid #79dfe4;border-radius:50%;width:24px;height:24px;padding:0;margin-left:8px;background:#0c171c!important;color:#79dfe4!important;font:700 12px/1 ui-monospace,Menlo,monospace;box-shadow:0 0 8px #79dfe422}
+#nx-final .help:hover{background:#19333a!important;color:#e5ffff!important;border-color:#b4ffff}
+#nx-final .region-heading{color:#79dfe4;padding:10px;border-bottom:1px solid #385159;font-size:11px;letter-spacing:.14em}
+#nx-final .btn{border:1px solid #496269;padding:10px 16px;font-size:12px;color:#bce6e6;background:#0c171c;letter-spacing:.06em}
+#nx-final .btn:hover,#nx-final .choice:hover{background:#1a343a}
+#nx-final .metric{border:1px solid #2c4146;background:#0c171c;padding:16px}
+#nx-final .region{display:block;width:100%;text-align:left;padding:10px 12px;border:0;border-bottom:1px solid #24383d;font-size:12px;background:#0c171c;color:#e6f0ee;line-height:1.5}
+#nx-final .region.active,#nx-final .choice.active{background:#19333a;color:#8ce5e5;border-color:#79dfe4}
+#nx-final .node{position:absolute;transform:translate(-50%,-50%);width:13px;height:13px;border:2px solid #d4ffff;border-radius:50%;background:#69dce0;box-shadow:0 0 12px #69dce0,0 0 26px #69dce0;padding:0;z-index:3}
+#nx-final .node:after{content:"";position:absolute;inset:-8px;border:1px solid #70dfe088;border-radius:50%;animation:nxfpulse 2s infinite}
+@keyframes nxfpulse{to{transform:scale(2.2);opacity:0}}
+#nx-final .node.active{background:#efb36e;border-color:#fff5e4;box-shadow:0 0 14px #efb36e,0 0 32px #efb36e;width:16px;height:16px}
+
+/* FIBER OPTIC ARC ANIMATIONS */
+#nx-final .cable-base{fill:none;stroke:#2c5d66;stroke-width:1.1;stroke-dasharray:3 3;opacity:.65}
+#nx-final .cable-active{fill:none;stroke:#79dfe4;stroke-width:1.6;opacity:.85;filter:drop-shadow(0 0 4px #79dfe4)}
+#nx-final .cable-flow{fill:none;stroke:#d6ffff;stroke-width:2.2;stroke-linecap:round;stroke-dasharray:14 140;animation:nxfcable 3.2s linear infinite;filter:drop-shadow(0 0 6px #79dfe4)}
+#nx-final .cable-flow.amber-flow{stroke:#ffd699;filter:drop-shadow(0 0 6px #efb36e);animation-duration:2.6s}
+@keyframes nxfcable{from{stroke-dashoffset:154}to{stroke-dashoffset:0}}
+
+#nx-final .net-pulse{fill:none;stroke:#a8ffff;stroke-width:2.4;stroke-linecap:round;stroke-dasharray:12 180;animation:nxfnet 2.8s linear infinite;filter:drop-shadow(0 0 6px #79dfe4)}
+@keyframes nxfnet{from{stroke-dashoffset:192}to{stroke-dashoffset:0}}
+
+#nx-final .event{border-left:3px solid #e3ad67;background:#111c20;padding:14px 16px;margin:10px 0}
+#nx-final .event.resolved{border-color:#65c99c}
+#nx-final .event.unknown{border-color:#9fb3b7}
+#nx-final .tag{border:1px solid #385159;padding:7px 12px;font-size:12px;display:inline-block;margin:2px;background:#0c171c}
+#nx-final a{color:#e8b16f;text-decoration:none}
+#nx-final a:hover{color:#fff;text-decoration:underline}
+#nx-final .choice{border:1px solid #385159;background:#0c171c;padding:16px;text-align:left;min-height:96px;width:100%;transition:.2s}
+#nx-final .choice.active{border-color:#79dfe4;background:#19333a}
+
+/* VISITOR MODE */
+#nx-final .visitor-path-scroll{overflow-x:auto;overflow-y:hidden;padding:6px 2px 16px;scrollbar-width:thin;scrollbar-color:#426b70 #0c171c}
+#nx-final .visitor-path{display:flex;align-items:stretch;gap:0;min-width:1240px}
+#nx-final .step{border:1px solid #385159;padding:18px;background:#0c171c;min-width:255px;flex:1;min-height:350px}
+#nx-final .step .num{font-size:11px;color:#e8b16f;letter-spacing:.12em}
+#nx-final .step .name{font-size:15px;font-weight:700;margin-top:14px;line-height:1.6;color:#f4f8f7}
+#nx-final .step .detail{font-size:14px;line-height:1.8;color:#c5d3d4;margin-top:10px}
+#nx-final .step-visual{height:124px;margin:10px -2px 8px;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#17404a66,transparent 72%);border-bottom:1px solid #29434a}
+#nx-final .step-visual svg{width:100%;height:90px;max-width:160px;opacity:.92;overflow:visible}
+#nx-final .step-visual .glow{filter:drop-shadow(0 0 5px #65dce277)}
+#nx-final .arrow{position:relative;align-self:center;flex:0 0 40px;height:1px;margin:0 6px;background:#37666c;box-shadow:0 0 5px #4b9da2;font-size:0;overflow:visible}
+#nx-final .arrow:after{content:"";position:absolute;top:-3px;left:-5px;width:6px;height:6px;border-radius:50%;background:#c7ffff;box-shadow:0 0 7px #79dfe4,0 0 13px #79dfe4;animation:nxf-flow 1.7s linear infinite}
+@keyframes nxf-flow{0%{left:-5px;opacity:0}10%{opacity:1}90%{opacity:1}100%{left:100%;opacity:0}}
+#nx-final .visitor-copy{color:#f0f5f4!important;line-height:1.85;font-size:15px}
+#nx-final .arrow:before{content:"";position:absolute;right:-1px;top:-5px;width:10px;height:11px;background:#79dfe4;clip-path:polygon(0 0,100% 50%,0 100%,30% 50%);filter:drop-shadow(0 0 4px #79dfe4)}
+#nx-final .build-log{background:#0a1216;border:1px solid #293e43;padding:18px;margin-top:28px}
+#nx-final .build-log ul{margin:8px 0 0;padding-left:1.25rem;color:#c5d3d4;font-size:13px;line-height:1.8;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif}
+@media(prefers-reduced-motion:reduce){
+  #nx-final .arrow:after,#nx-final .cable-flow,#nx-final .net-pulse{animation:none}
+}
+#nx-final button:focus-visible{outline:2px solid #79dfe4;outline-offset:3px}
+</style>
+
+<div class="p-4 sm:p-6">
+<header class="border-b pb-4 flex flex-wrap justify-between gap-4" style="border-color:#30474c">
+ <div>
+  <div class="tiny cyan">NAKAJOX / EXPERIMENT SERIES</div>
+  <h1 class="text-3xl sm:text-4xl font-bold tracking-widest mt-2">WHERE IS<br>THE CLOUD<span class="cyan">?</span></h1>
+  <div class="muted text-xs mt-2 tracking-widest">THE CLOUD IS NOT IN THE SKY.</div>
+ </div>
+ <div class="text-right">
+  <div class="tiny amber">OBSERVATION TERMINAL / 001</div>
+  <div class="tiny muted mt-2">GLOBAL INFRASTRUCTURE OBSERVER</div>
+  <div id="nf-clock" class="text-lg cyan mt-3 font-bold">--:--:--</div>
+  <div class="tiny muted">LOCAL DEVICE TIME</div>
+ </div>
+</header>
+
+<section class="mt-5">
+ <div class="tiny amber">01 / WHY SHOULD WE CARE? <button class="help" data-help="why" aria-label="このセクションの補足説明">?</button></div>
+ <h2 class="text-xl sm:text-2xl mt-3 leading-relaxed">私たちの日常は、<br>どれほど見えないインフラに依存しているのか？</h2>
+ <p class="muted text-sm leading-6 mt-3">動画を見る。地図を開く。ネットで買い物をする。写真を保存する。その多くは、遠く離れた場所にあるコンピューターと光ファイバー通信することで成り立っています。私たちが「クラウド」と呼ぶものは、空の上ではなく、地上にある巨大な物理設備です。</p>
+ <div class="grid sm:grid-cols-3 gap-3 mt-4">
+  <div class="metric">
+   <div class="tiny amber">WHEN IT STOPS</div>
+   <div class="text-lg font-bold mt-2">サービスが止まる</div>
+   <p class="muted text-xs leading-5 mt-2">決済、動画、業務システム。裏側の設備や海底ケーブルに障害が起きると、日常のサービスにも影響します。</p>
+  </div>
+  <div class="metric">
+   <div class="tiny amber">WHERE IT RUNS</div>
+   <div class="text-lg font-bold mt-2">世界に分散する</div>
+   <p class="muted text-xs leading-5 mt-2">企業は複数の地域に設備を配置し、応答速度の最適化や自然災害への備えを考えて運用しています。</p>
+  </div>
+  <div class="metric">
+   <div class="tiny amber">WHO CONTROLS IT</div>
+   <div class="text-lg font-bold mt-2">巨大基盤が支える</div>
+   <p class="muted text-xs leading-5 mt-2">多くのWebサービスやアプリは、AWSやGoogle Cloud、Cloudflareなどのインフラ上で稼働しています。</p>
+  </div>
+ </div>
+ <p class="text-sm mt-4 cyan">見えないインフラの「場所・接続・障害・依存関係」を観測する。</p>
+</section>
+
+<section class="section">
+ <div class="flex justify-between flex-wrap gap-2">
+  <div class="tiny cyan">02 / KNOWN REGIONS &amp; BACKBONE <button class="help" data-help="regions" aria-label="リージョン地図の補足説明">?</button></div>
+  <div class="tiny muted">GLOBAL CLOUD MAP / SELECT A NODE</div>
+ </div>
+ <h2 class="text-xl mt-3">クラウドは、世界のどこにある？</h2>
+ <p class="muted text-sm leading-6 mt-2">光点は主要リージョンの都市座標、光の弧はリージョン間を結ぶバックボーン（海底・陸上光ファイバー網の概念表現）です。都市をクリックすると接続経路が発光します。</p>
+ <div id="nf-map" class="relative overflow-hidden mt-4 border" style="height:340px;background:#071318;border-color:#30474c;background-image:radial-gradient(circle at 50% 50%,#122c3444,transparent 75%),linear-gradient(#25434a22 1px,transparent 1px),linear-gradient(90deg,#25434a22 1px,transparent 1px);background-size:100% 100%,28px 28px,28px 28px">
+  <svg id="nf-map-svg" viewBox="0 0 900 420" preserveAspectRatio="xMidYMid meet" class="absolute inset-0 w-full h-full">
+   <line x1="0" y1="210" x2="900" y2="210" stroke="#2d4c53" stroke-width="1" stroke-dasharray="4 4"/>
+   <line x1="450" y1="0" x2="450" y2="420" stroke="#2d4c53" stroke-width="1" stroke-dasharray="4 4"/>
+   <g fill="#224146" stroke="#4f7579" stroke-width="1.2" opacity=".85">
+    <path d="M76 92L112 58 175 45 221 65 258 89 250 124 222 141 208 178 177 191 155 226 129 211 116 176 89 157 70 125Z"/>
+    <path d="M210 225L245 239 266 273 255 316 238 361 216 386 201 347 194 302 178 271Z"/>
+    <path d="M365 85L404 65 451 70 476 91 464 113 428 120 411 143 380 130 351 111Z"/>
+    <path d="M400 151L442 140 476 158 493 201 477 250 453 290 431 270 420 225 394 191Z"/>
+    <path d="M465 79L530 52 604 60 652 85 715 93 765 127 746 158 695 160 671 190 630 185 606 210 569 196 548 164 507 158 484 128Z"/>
+    <path d="M702 239L746 229 786 246 805 276 784 298 742 288 717 268Z"/>
+   </g>
+   <g id="nf-cables"></g>
+   <g fill="#9fc4c5" font-size="11" letter-spacing="3" opacity=".65">
+    <text x="115" y="28">NORTH AMERICA</text>
+    <text x="385" y="32">EUROPE</text>
+    <text x="645" y="32">ASIA</text>
+    <text x="12" y="205" font-size="9" letter-spacing="1">EQUATOR 0°</text>
+   </g>
+  </svg>
+  <div id="nf-nodes" class="absolute inset-0"></div>
+  <div class="absolute bottom-3 left-3 tiny muted">● REGION NODES &amp; SIMULATED FIBER PULSE (EQUIRECTANGULAR)</div>
+ </div>
+ <div class="grid sm:grid-cols-3 gap-3 mt-3">
+  <div class="panel p-2">
+   <div class="region-heading">REGION DIRECTORY</div>
+   <div id="nf-list" class="max-h-56 overflow-y-auto"></div>
+  </div>
+  <div class="panel p-4 sm:col-span-2">
+   <div class="tiny cyan">SELECTED REGION</div>
+   <div id="nf-city" class="text-xl font-bold mt-2">TOKYO</div>
+   <div id="nf-provider" class="muted text-xs mt-1">AWS / ASIA PACIFIC</div>
+   <div class="grid grid-cols-2 gap-3 mt-4">
+    <div><div class="tiny muted">REGION CODE</div><div id="nf-code" class="text-sm mt-1">ap-northeast-1</div></div>
+    <div><div class="tiny muted">COORDINATES</div><div id="nf-coords" class="text-sm mt-1">35.68°N, 139.77°E</div></div>
+   </div>
+   <p id="nf-desc" class="muted text-sm leading-6 mt-4 border-t pt-3" style="border-color:#30474c">東京にあるAWSのリージョン。</p>
+  </div>
+ </div>
+</section>
+
+<section class="section">
+ <div class="flex justify-between flex-wrap gap-2">
+  <div class="tiny cyan">03 / NETWORK <button class="help" data-help="network" aria-label="ネットワーク図の補足説明">?</button></div>
+  <div class="tiny muted">NETWORK RELATIONSHIPS</div>
+ </div>
+ <h2 class="text-xl mt-3">世界は、見えない線でつながっている。</h2>
+ <p class="muted text-sm leading-6 mt-2">インターネットは、単一の巨大なケーブルではありません。通信事業者（ISP）や相互接続点（IX）、データセンターなどの自律したネットワーク同士が相互に接続し、光のパケットが絶えず行き交っています。</p>
+ <div class="panel p-4 mt-3">
+  <div class="flex justify-between flex-wrap gap-2 tiny muted"><span>ネットワークの階層関係 / 概念モデル</span><span class="amber">※ パルスは通信の流れを表す概念演出です</span></div>
+  <svg viewBox="0 0 700 250" class="w-full mt-3" role="img" aria-label="通信ネットワークの概念図">
+   <g stroke="#39666d" stroke-width="1.8" fill="none" opacity=".8">
+    <path id="net-p1" d="M100 115L260 65L420 115L590 55"/>
+    <path id="net-p2" d="M100 115L260 190L420 115L590 190"/>
+    <path id="net-p3" d="M260 65L260 190"/>
+    <path id="net-p4" d="M420 115L590 55"/>
+    <path id="net-p5" d="M420 115L590 190"/>
+   </g>
+   <!-- Animated data packets along the network lines -->
+   <g fill="none">
+    <path d="M100 115L260 65L420 115L590 55" class="net-pulse"/>
+    <path d="M590 190L420 115L260 190L100 115" class="net-pulse" style="animation-delay:-1.2s;stroke:#ffd699"/>
+    <path d="M260 65L260 190" class="net-pulse" style="animation-delay:-0.6s"/>
+   </g>
+   <g fill="#0c2028" stroke="#70dce2" stroke-width="2.2">
+    <circle cx="100" cy="115" r="25"/><circle cx="260" cy="65" r="25"/><circle cx="260" cy="190" r="25"/><circle cx="420" cy="115" r="30" stroke="#e8b16f"/><circle cx="590" cy="55" r="25"/><circle cx="590" cy="190" r="25"/>
+   </g>
+   <g fill="#d8f7f8" font-size="11" font-weight="bold" text-anchor="middle">
+    <text x="100" y="119">USER</text><text x="260" y="69">ISP</text><text x="260" y="194">IX</text><text x="420" y="119" fill="#ffd699">CLOUD</text><text x="590" y="59">APP</text><text x="590" y="194">DATA</text>
+   </g>
+   <g fill="#9fb3b7" font-size="11" text-anchor="middle">
+    <text x="100" y="156">利用者端末</text><text x="260" y="106">接続事業者</text><text x="260" y="232">相互接続点</text><text x="420" y="162">クラウド基盤</text><text x="590" y="96">Webサービス</text><text x="590" y="232">データベース</text>
+   </g>
+  </svg>
+  <div class="tiny cyan mt-4">図の見方</div>
+  <div class="grid sm:grid-cols-3 gap-3 mt-2">
+   <div class="metric"><div class="text-sm font-bold">丸は「ネットワークの役割」</div><p class="muted text-xs leading-5 mt-2">利用者、接続事業者（ISP）、相互接続点（IX）、クラウド基盤、アプリケーションやデータを表します。</p></div>
+   <div class="metric"><div class="text-sm font-bold">線は「論理的な接続関係」</div><p class="muted text-xs leading-5 mt-2">通信は複数の組織が管理するネットワークをバケツリレーのように通過して目的地へ届きます。</p></div>
+   <div class="metric"><div class="text-sm font-bold">経路は動的に変化する</div><p class="muted text-xs leading-5 mt-2">回線の混雑や障害に応じて通信の通り道は自動的に切り替わります。経路はひとつに固定されません。</p></div>
+  </div>
+ </div>
+ <div class="grid sm:grid-cols-2 gap-3 mt-3">
+  <div class="metric">
+   <div class="tiny cyan">BGP / BORDER GATEWAY PROTOCOL</div>
+   <div class="text-base font-bold mt-2">ネットワーク同士の道案内</div>
+   <p class="muted text-xs leading-5 mt-2">自律システム（AS）と呼ばれるネットワーク群同士が、どのIPアドレスへどの経路で到達できるかを交換する仕組みです。</p>
+  </div>
+  <div class="metric">
+   <div class="tiny cyan">IX / INTERNET EXCHANGE</div>
+   <div class="text-base font-bold mt-2">ネットワークの相互接続点</div>
+   <p class="muted text-xs leading-5 mt-2">複数の通信事業者やクラウド事業者が直接ケーブルをつなぎ、効率よく通信を交換する物理的な拠点です。</p>
+  </div>
+ </div>
+</section>
+
+<section class="section">
+ <div class="flex flex-wrap justify-between gap-2">
+  <div class="tiny cyan">04 / LIVE STATUS FEED <button class="help" data-help="timeline" aria-label="障害情報の補足説明">?</button></div>
+  <div class="tiny muted">PUBLIC STATUS ENDPOINTS</div>
+ </div>
+ <h2 class="text-xl mt-3">障害は、何に影響しているのか。</h2>
+ <p class="muted text-sm leading-6 mt-2">主要インフラ事業者が公式に公開しているステータスフィードをリアルタイムで取得し、直近7日間および現在進行中の事象を表示します。</p>
+ <div class="grid grid-cols-3 gap-3 mt-3">
+  <div class="metric"><div class="tiny muted">取得できた情報源</div><div id="nf-feeds" class="text-xl font-bold cyan mt-2">--</div></div>
+  <div class="metric"><div class="tiny muted">進行中の事象</div><div id="nf-active" class="text-xl font-bold amber mt-2">--</div></div>
+  <div class="metric"><div class="tiny muted">直近7日間の記録</div><div id="nf-recent" class="text-xl font-bold mt-2">--</div></div>
+ </div>
+ <div class="flex flex-wrap gap-3 items-center mt-3">
+  <button id="nf-refresh" class="btn">公開情報を再取得 ↻</button>
+  <span id="nf-check" class="tiny muted">公開フィードを確認しています…</span>
+ </div>
+ <div id="nf-timeline" class="mt-3"><div class="event unknown">公開フィードへ接続しています...</div></div>
+ <div class="mt-4">
+  <div class="tiny cyan">公式発表された影響対象コンポーネント</div>
+  <div id="nf-impact" class="panel p-4 mt-2"><p class="muted text-xs leading-6">障害情報を確認しています。</p></div>
+ </div>
+ <div class="tiny muted mt-3">データソース：Google Cloud Status JSON / Cloudflare Status API（公開範囲のみ表示・すべての障害を網羅するものではありません）</div>
+</section>
+
+<section class="section visitor-mode">
+ <div class="tiny amber">05 / DEPENDENCY TRACE <button class="help" data-help="visitor" aria-label="日常行動トレースの補足説明">?</button></div>
+ <div class="flex flex-wrap justify-between items-center gap-2 mt-2">
+  <h2 class="text-xl sm:text-2xl">あなたの日常は、何に支えられている？</h2>
+  <span class="tiny cyan">INTERACTIVE MODEL</span>
+ </div>
+ <p class="muted text-sm leading-6 mt-3">日常の行動をひとつ選ぶと、画面の背後で動く代表的なインフラの連鎖をたどることができます。</p>
+
+ <div class="grid sm:grid-cols-3 gap-3 mt-4" id="nf-choices">
+  <button class="choice active" data-choice="video">
+   <div class="tiny amber">01 / ENTERTAINMENT</div>
+   <div class="text-lg font-bold mt-2">動画を見る</div>
+   <div class="tiny muted mt-2">VIDEO STREAMING</div>
+  </button>
+  <button class="choice" data-choice="shop">
+   <div class="tiny amber">02 / COMMERCE</div>
+   <div class="text-lg font-bold mt-2">ネットで買い物をする</div>
+   <div class="tiny muted mt-2">ONLINE SHOPPING</div>
+  </button>
+  <button class="choice" data-choice="map">
+   <div class="tiny amber">03 / MOBILITY</div>
+   <div class="text-lg font-bold mt-2">地図・道案内を使う</div>
+   <div class="tiny muted mt-2">DIGITAL MAP</div>
+  </button>
+ </div>
+
+ <div class="panel p-4 mt-3">
+  <div class="flex justify-between flex-wrap gap-2">
+   <div class="tiny cyan" id="nf-path-title">YOUR DAILY INFRASTRUCTURE / VIDEO</div>
+   <div class="tiny muted">CONCEPTUAL ARCHITECTURE</div>
+  </div>
+
+  <div class="visitor-path-scroll mt-4">
+   <div id="nf-path" class="visitor-path"></div>
+  </div>
+  <div class="tiny muted mt-1">← SCROLL HORIZONTALLY TO TRACE THE PIPELINE →</div>
+
+  <div class="border-t mt-4 pt-4" style="border-color:#30474c">
+   <div class="tiny amber">WHAT HAPPENS BEHIND THE SCREEN?</div>
+   <p id="nf-explain" class="mt-2 visitor-copy"></p>
+  </div>
+
+  <div class="mt-4">
+   <div class="tiny cyan">IF ONE LAYER FAILS...</div>
+   <p id="nf-failure" class="mt-2 visitor-copy"></p>
+  </div>
+
+  <div class="mt-4 border-t pt-3" style="border-color:#30474c">
+   <div class="tiny muted">NOTE / モデル上の前提</div>
+   <p class="muted text-xs leading-5 mt-2">これは一般的なWebアーキテクチャを説明する概念モデルです。実際の構成・利用事業者・通信経路はサービスや設計によって異なります。</p>
+  </div>
+ </div>
+
+ <div class="mt-5 text-center py-5 px-4 border" style="border-color:#30474c;background:linear-gradient(180deg,#122027,#080e13)">
+  <div class="tiny amber">THE INVISIBLE INFRASTRUCTURE</div>
+  <h3 class="text-xl sm:text-2xl mt-3 leading-relaxed">あなたが画面を見ているとき、<br>世界のどこかでは、<br><span class="cyan">無数のコンピューターが稼働し続けている。</span></h3>
+  <p class="tiny muted mt-4">THE CLOUD IS NOT IN THE SKY.</p>
+  <button id="nf-reset" class="btn mt-4">RESET VIEW ↻</button>
+ </div>
+</section>
+
+<section class="section">
+ <div class="tiny cyan">06 / PHYSICAL ARCHITECTURE <button class="help" data-help="infra" aria-label="物理構成の補足説明">?</button></div>
+ <h2 class="text-xl mt-3">クラウドの正体は、巨大な建物と冗長設計。</h2>
+ <div class="grid sm:grid-cols-3 gap-3 mt-3">
+  <div class="metric">
+   <div class="tiny cyan">DATA CENTER</div>
+   <div class="text-lg font-bold mt-2">データセンター</div>
+   <p class="muted text-xs leading-5 mt-2">サーバー、ストレージ、ネットワーク機器を高密度に収容し、非常用電源や大型冷却設備で24時間稼働させる物理施設。</p>
+  </div>
+  <div class="metric">
+   <div class="tiny cyan">AVAILABILITY ZONE</div>
+   <div class="text-lg font-bold mt-2">アベイラビリティゾーン</div>
+   <p class="muted text-xs leading-5 mt-2">同じリージョン内で、電源・空調・ネットワークを物理的に分離した独立設備群。単一障害点をなくすために設計されます。</p>
+  </div>
+  <div class="metric">
+   <div class="tiny cyan">REGION</div>
+   <div class="text-lg font-bold mt-2">リージョン</div>
+   <p class="muted text-xs leading-5 mt-2">複数のアベイラビリティゾーンを束ねた、クラウドサービスの地理的な提供エリア単位。</p>
+  </div>
+ </div>
+ <div class="panel p-4 mt-3">
+  <div class="tiny amber">単一障害点を避けるための階層構造</div>
+  <div class="flex flex-wrap justify-center items-center gap-2 mt-3">
+   <span class="tag">REGION / TOKYO</span><span class="cyan">→</span><span class="tag">ZONE A (独立電源・回線)</span><span class="cyan">＋</span><span class="tag">ZONE B (独立電源・回線)</span><span class="cyan">＋</span><span class="tag">ZONE C (独立電源・回線)</span>
+  </div>
+  <p class="muted text-sm leading-6 mt-3">ひとつのリージョンの中に、物理的に離れた複数のゾーンを設けることで、ある建物で停電や機器故障が起きても、別のゾーンでシステムを継続稼働させる設計が可能になります。</p>
+ </div>
+</section>
+
+<section class="section">
+ <div class="tiny cyan">07 / PRIMARY INFRASTRUCTURE <button class="help" data-help="providers" aria-label="主要事業者の補足説明">?</button></div>
+ <h2 class="text-xl mt-3">誰が、この基盤を運用しているのか？</h2>
+ <div class="grid sm:grid-cols-3 gap-3 mt-3">
+  <a class="metric block" href="https://aws.amazon.com/" target="_blank" rel="noopener">
+   <div class="tiny amber">AMAZON WEB SERVICES</div>
+   <div class="text-lg font-bold mt-2">AWS ↗</div>
+   <p class="muted text-xs mt-2 leading-5">世界各地にリージョンとエッジ拠点を展開するクラウドコンピューティング基盤。</p>
+  </a>
+  <a class="metric block" href="https://cloud.google.com/" target="_blank" rel="noopener">
+   <div class="tiny cyan">GOOGLE</div>
+   <div class="text-lg font-bold mt-2">GOOGLE CLOUD ↗</div>
+   <p class="muted text-xs mt-2 leading-5">独自の海底ケーブル網とグローバルネットワークを持つクラウド基盤。</p>
+  </a>
+  <a class="metric block" href="https://www.cloudflare.com/" target="_blank" rel="noopener">
+   <div class="tiny amber">CLOUDFLARE</div>
+   <div class="text-lg font-bold mt-2">CLOUDFLARE ↗</div>
+   <p class="muted text-xs mt-2 leading-5">世界300都市以上のエッジ拠点でCDN・DNS・DDoS防御などを担うネットワーク基盤。</p>
+  </a>
+ </div>
+</section>
+
+<!-- BUILD LOG -->
+<section class="build-log" aria-label="開発ログ">
+ <div class="flex flex-wrap justify-between items-center gap-2 border-b pb-2" style="border-color:#293e43">
+  <span class="tiny amber">BUILD LOG / 001</span>
+  <span class="tiny muted">DOCUMENTATION &amp; NEXT STEP</span>
+ </div>
+ <div class="grid sm:grid-cols-2 gap-4 mt-3">
+  <div>
+   <div class="tiny cyan">DURATION &amp; STACK</div>
+   <p class="text-xs muted mt-1 leading-6">
+    所要時間：約4.0時間（構成設計・UI実装・SVG回線アニメーション・公開API接続検証）<br>
+    使用技術：HTML5 / Vanilla CSS / Vanilla JavaScript / SVG / Google Cloud &amp; Cloudflare Public Status JSON API
+   </p>
+  </div>
+  <div>
+   <div class="tiny cyan">NEXT EXPERIMENT / 002</div>
+   <p class="text-xs muted mt-1 leading-6">
+    <strong>NAKAJOX EXPERIMENT 002 — ORBITAL OBSERVER</strong><br>
+    宇宙空間を周回する国際宇宙ステーション（ISS）の現在座標・高度・速度（秒速約7.66km）をリアルタイム軌道APIから取得し、地球上の通信・測位インフラを観測する。
+   </p>
+  </div>
+ </div>
+ <div class="mt-3 pt-3 border-t" style="border-color:#293e43">
+  <div class="tiny cyan">KEY TAKEAWAYS（学んだこと）</div>
+  <ul>
+   <li>「クラウド」という抽象的な言葉の裏には、都市の電力網・冷却設備・海底ケーブルといった極めて物理的な制約が存在する。</li>
+   <li>公開APIのステータス情報を扱う際は、取得できた事実と取得できない限界を明確に分けて表示する設計が信頼性につながる。</li>
+   <li>地図上の座標プロットと回線アークは、正距円筒図法の数式とSVGのパスアニメーションを組み合わせることで、画面幅に依存せず正確に描画できる。</li>
+  </ul>
+ </div>
+</section>
+
+<footer class="border-t mt-5 pt-4 flex flex-wrap justify-between gap-3 tiny muted" style="border-color:#30474c">
+ <span>NAKAJOX EXPERIMENT 001 / OBSERVATION OF THE INVISIBLE</span>
+ <a href="https://electriclady.xyz" target="_blank" rel="noopener">© electriclady.xyz ↗</a>
+</footer>
+
+<div id="nf-modal" class="hidden fixed inset-0 z-50 items-center justify-center p-4" style="background:#000d" role="dialog" aria-modal="true" aria-labelledby="nf-modal-title">
+ <div class="panel p-5 w-full max-w-lg">
+  <div class="flex justify-between items-center">
+   <div id="nf-modal-title" class="tiny amber">FIELD NOTE</div>
+   <button id="nf-close" class="btn">CLOSE ×</button>
+  </div>
+  <div id="nf-modal-body" class="text-sm leading-7 mt-4" style="font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif"></div>
+ </div>
+</div>
+</div>
+
+<script>
+(()=>{
+const root=document.getElementById('nx-final');
+if(!root||root.dataset.ready)return;
+root.dataset.ready='1';
+
+const $=s=>root.querySelector(s);
+
+// [City, Provider, Region Code, Country, Latitude, Longitude, Description]
+const regions=[
+ ['TOKYO','AWS','ap-northeast-1','Japan',35.68,139.77,'東京にあるAWSのリージョン。太平洋横断海底ケーブルの陸揚げ拠点とも近く、アジアと北米を結ぶ要衝です。'],
+ ['OSAKA','AWS','ap-northeast-3','Japan',34.69,135.50,'大阪にあるAWSのリージョン。東京リージョンと専用線網で結ばれ、災害対策（DR）や冗長構成に使われます。'],
+ ['SINGAPORE','AWS','ap-southeast-1','Singapore',1.35,103.82,'東南アジアのハブとなる主要リージョン。多数の国際海底ケーブルが集中するアジア通信の交差点です。'],
+ ['FRANKFURT','AWS','eu-central-1','Germany',50.11,8.68,'欧州の中心部に位置する主要リージョン。世界最大級のインターネット相互接続点（DE-CIX）を擁する都市です。'],
+ ['N. VIRGINIA','AWS','us-east-1','United States',39.04,-77.49,'米国東部の歴史ある大規模リージョン。大西洋横断ケーブルを通じて欧州とも直結するインターネットの起点です。'],
+ ['OREGON','AWS','us-west-2','United States',45.52,-122.68,'米国西部の主要リージョン。太平洋横断ケーブルを通じて日本・アジアと直接結ばれています。'],
+ ['IOWA','GOOGLE CLOUD','us-central1','United States',41.26,-95.86,'Google Cloudの米国中部リージョン。北米大陸の東西バックボーン網の中継点として機能します。'],
+ ['TOKYO','GOOGLE CLOUD','asia-northeast1','Japan',35.68,139.77,'Google Cloudの東京リージョン。同社が投資する太平洋横断海底ケーブル網と直結しています。']
+];
+
+// Backbone links between region indices [fromIndex, toIndex]
+const links=[
+ [0,1],[0,2],[0,5],[5,6],[6,4],[4,3],[3,2],[7,5],[7,2]
+];
+
+const nodes=$('#nf-nodes');
+const list=$('#nf-list');
+const mapBox=$('#nf-map');
+const cablesGroup=$('#nf-cables');
+
+function projectSVG(lat,lon){
+ return {
+  x:((lon+180)/360)*900,
+  y:((90-lat)/180)*420
+ };
+}
+
+function renderCables(selectedIndex){
+ if(!cablesGroup)return;
+ cablesGroup.innerHTML='';
+ links.forEach(([a,b],idx)=>{
+  const p1=projectSVG(regions[a][4],regions[a][5]);
+  const p2=projectSVG(regions[b][4],regions[b][5]);
+  const mx=(p1.x+p2.x)/2;
+  const dist=Math.hypot(p2.x-p1.x,p2.y-p1.y);
+  const my=(p1.y+p2.y)/2 - Math.min(48,dist*0.18);
+  const d=`M ${p1.x.toFixed(1)} ${p1.y.toFixed(1)} Q ${mx.toFixed(1)} ${my.toFixed(1)} ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+
+  const isConnected=(a===selectedIndex||b===selectedIndex);
+
+  const base=document.createElementNS('http://www.w3.org/2000/svg','path');
+  base.setAttribute('d',d);
+  base.setAttribute('class',isConnected?'cable-active':'cable-base');
+  cablesGroup.appendChild(base);
+
+  const flow=document.createElementNS('http://www.w3.org/2000/svg','path');
+  flow.setAttribute('d',d);
+  flow.setAttribute('class','cable-flow'+(isConnected?' amber-flow':''));
+  flow.style.animationDelay=(-idx*0.55)+'s';
+  cablesGroup.appendChild(flow);
+ });
+}
+
+function formatCoords(lat,lon){
+ const ns=lat>=0?lat.toFixed(2)+'°N':Math.abs(lat).toFixed(2)+'°S';
+ const ew=lon>=0?lon.toFixed(2)+'°E':Math.abs(lon).toFixed(2)+'°W';
+ return ns+', '+ew;
+}
+
+function positionRegionNodes(){
+ const width=mapBox.clientWidth,height=mapBox.clientHeight;
+ if(!width||!height)return;
+ const scale=Math.min(width/900,height/420);
+ const drawnWidth=900*scale,drawnHeight=420*scale;
+ const offsetX=(width-drawnWidth)/2,offsetY=(height-drawnHeight)/2;
+ nodes.querySelectorAll('.node').forEach((node,i)=>{
+  const r=regions[i];
+  const pt=projectSVG(r[4],r[5]);
+  node.style.left=(offsetX+(pt.x/900)*drawnWidth)+'px';
+  node.style.top=(offsetY+(pt.y/420)*drawnHeight)+'px';
+ });
+}
+
+function selectRegion(i){
+ const r=regions[i];
+ $('#nf-city').textContent=r[0];
+ $('#nf-provider').textContent=r[1]+' / '+r[3].toUpperCase();
+ $('#nf-code').textContent=r[2];
+ $('#nf-coords').textContent=formatCoords(r[4],r[5]);
+ $('#nf-desc').textContent=r[6];
+ nodes.querySelectorAll('.node').forEach((n,j)=>n.classList.toggle('active',i===j));
+ list.querySelectorAll('.region').forEach((n,j)=>n.classList.toggle('active',i===j));
+ renderCables(i);
+}
+
+regions.forEach((r,i)=>{
+ const n=document.createElement('button');
+ n.className='node';
+ n.title=r[0]+' ('+r[1]+')';
+ n.setAttribute('aria-label',r[0]+' '+r[1]);
+ n.onclick=()=>selectRegion(i);
+ nodes.appendChild(n);
+
+ const b=document.createElement('button');
+ b.className='region';
+ b.innerHTML='<span class="cyan font-bold">'+r[0]+'</span><br><span class="muted">'+r[1]+' / '+r[2]+'</span>';
+ b.onclick=()=>selectRegion(i);
+ list.appendChild(b);
+});
+positionRegionNodes();
+window.addEventListener('resize',positionRegionNodes,{passive:true});
+if('ResizeObserver' in window)new ResizeObserver(positionRegionNodes).observe(mapBox);
+selectRegion(0);
+
+const help={
+ why:['WHY SHOULD WE CARE?','クラウドはWebサービスやアプリの裏側でデータを保存・処理する物理的なコンピューター群です。海底ケーブルの切断やデータセンターの電源障害が起きると、ログイン・決済・動画再生などに直接影響します。'],
+ regions:['KNOWN REGIONS & BACKBONE','リージョンはクラウド事業者がサービスを提供する地理的な地域単位です。地図上の光点は該当都市の緯度・経度（正距円筒図法）を示し、光の弧は大陸間を結ぶ光ファイバー網の概念表現です。'],
+ network:['NETWORK','インターネットは単一の組織が所有する網ではなく、世界中の通信事業者（ISP）やデータセンターがBGPという経路制御プロトコルで相互接続した「ネットワークの集合体」です。'],
+ timeline:['LIVE STATUS FEED','Google Cloud と Cloudflare が公式に公開している障害情報JSONをブラウザから直接取得しています。すべてのインターネット障害を網羅するものではなく、各社が公開した事象のみを表示します。'],
+ visitor:['DEPENDENCY TRACE','日常の操作をひとつ選び、その背後で動く標準的なWebインフラの層をたどる概念モデルです。実際のサービスごとの内部構成は設計によって異なります。'],
+ infra:['PHYSICAL ARCHITECTURE','データセンターにサーバーやネットワーク機器が収容されています。リージョンは地理的な地域、アベイラビリティゾーンは同じリージョン内で電源や空調・回線を独立させた設備群を指します。'],
+ providers:['PRIMARY INFRASTRUCTURE','AWSとGoogle Cloudは主に計算資源やストレージを提供するクラウド基盤であり、Cloudflareは通信の高速化（CDN）やセキュリティ防御を担うエッジネットワーク基盤です。']
+};
+
+root.querySelectorAll('[data-help]').forEach(b=>{
+ b.onclick=()=>{
+  const h=help[b.dataset.help];
+  if(!h)return;
+  $('#nf-modal-title').textContent=h[0];
+  $('#nf-modal-body').textContent=h[1];
+  $('#nf-modal').classList.remove('hidden');
+  $('#nf-modal').classList.add('flex');
+ };
+});
+
+function closeModal(){
+ $('#nf-modal').classList.add('hidden');
+ $('#nf-modal').classList.remove('flex');
+}
+$('#nf-close').onclick=closeModal;
+$('#nf-modal').onclick=e=>{if(e.target.id==='nf-modal')closeModal();};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+function clock(){
+ $('#nf-clock').textContent=new Intl.DateTimeFormat('ja-JP',{
+  hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false
+ }).format(new Date());
+}
+clock();
+setInterval(clock,1000);
+
+const experiences={
+ video:{
+  title:'YOUR DAILY INFRASTRUCTURE / VIDEO',
+  steps:[
+   {code:'01 / CLIENT',name:'再生ボタンを押す',detail:'端末のプレイヤーが動画の再生リストと映像データの取得要求を出します。',icon:'screen'},
+   {code:'02 / NETWORK',name:'通信網を通過する',detail:'Wi-Fiや基地局、通信事業者（ISP）のネットワークを経由して接続先へ向かいます。',icon:'network'},
+   {code:'03 / EDGE & CDN',name:'近くの拠点から配信',detail:'CDN（コンテンツ配信網）のキャッシュサーバーが、利用者に近い拠点から映像を返します。',icon:'delivery'},
+   {code:'04 / ORIGIN SERVER',name:'元のサーバー・保管庫',detail:'キャッシュにない映像や認証処理は、クラウド上のオリジンサーバーとストレージが処理します。',icon:'server'}
+  ],
+  explain:'動画を再生すると、端末はネットワークを通じて配信基盤へデータを要求します。世界中に分散したCDNのキャッシュ拠点から届くため、遠くのサーバーと毎回通信せずに滑らかに再生できます。',
+  failure:'通信回線やCDN、認証基盤に障害が起きると、動画の読み込みが止まったり、画質が自動的に低下したりします。'
+ },
+ shop:{
+  title:'YOUR DAILY INFRASTRUCTURE / SHOPPING',
+  steps:[
+   {code:'01 / CLIENT',name:'商品を選び注文する',detail:'ブラウザやアプリから、購入確定のリクエストを暗号化通信（HTTPS）で送信します。',icon:'cart'},
+   {code:'02 / DNS & ROUTING',name:'接続先の住所を引く',detail:'DNSがドメイン名をIPアドレスへ変換し、適切なデータセンターへ通信を導きます。',icon:'dns'},
+   {code:'03 / APPLICATION',name:'注文システムが処理',detail:'クラウド上のアプリケーションサーバーが、在庫の確認や注文データの検証を行います。',icon:'app'},
+   {code:'04 / DATABASE & PAY',name:'記録と決済連携',detail:'データベースへ注文履歴を書き込み、外部の決済ネットワークと連携して処理を完了します。',icon:'database'}
+  ],
+  explain:'注文ボタンが押されると、DNSによる名前解決を経てクラウド上のサーバーへ要求が届きます。在庫引き当て・データベース記録・決済APIとの通信が数秒以内に連動して完了します。',
+  failure:'DNSやデータベース、決済連携のいずれかが停止すると、ページが開かない・カートに進めない・決済エラーになるといった影響が出ます。'
+ },
+ map:{
+  title:'YOUR DAILY INFRASTRUCTURE / MAP',
+  steps:[
+   {code:'01 / CLIENT & GNSS',name:'現在地と目的地を指定',detail:'端末が測位衛星（GPS等）の信号から現在位置を計算し、目的地を検索します。',icon:'pin'},
+   {code:'02 / NETWORK',name:'地図・経路を要求',detail:'モバイル回線を通じて、現在地周辺の地図データとルート検索をサーバーへ要求します。',icon:'network'},
+   {code:'03 / MAP TILES',name:'地図タイルを取得',detail:'画面表示に必要な区画（タイル）ごとの地図データや店舗情報を高速に受け取ります。',icon:'tiles'},
+   {code:'04 / ROUTING ENGINE',name:'最適ルートを計算',detail:'クラウド側の計算エンジンが道路網とリアルタイムの渋滞情報を解析し、経路を返します。',icon:'route'}
+  ],
+  explain:'地図アプリは、端末側での衛星測位（GPSなど）と、クラウド側での地図データ配信・経路計算を組み合わせて動作しています。',
+  failure:'通信や地図配信サーバーに障害が起きると、新しいエリアの地図が表示されなくなったり、ルート再検索ができなくなったりします。'
+ }
+};
+
+const svgIcons={
+ screen:'<rect x="13" y="8" width="54" height="36" rx="3"/><path d="M28 53h24M40 44v9"/><path d="m35 18 13 8-13 8z" fill="#79dfe4" stroke="none"/>',
+ network:'<path d="M16 40 39 14 64 40M16 40 40 58 64 40M39 14 40 58"/><circle cx="16" cy="40" r="6"/><circle cx="39" cy="14" r="6"/><circle cx="64" cy="40" r="6"/><circle cx="40" cy="58" r="6"/>',
+ delivery:'<path d="M12 20h23v28H12zM43 12h23v28H43z"/><path d="M18 27h11M18 34h11M49 19h11M49 26h11"/><path d="M36 54c8-8 16-8 24 0M42 60c4-4 8-4 12 0"/>',
+ server:'<rect x="15" y="9" width="50" height="14" rx="2"/><rect x="15" y="29" width="50" height="14" rx="2"/><rect x="15" y="49" width="50" height="10" rx="2"/><path d="M22 16h3M22 36h3M22 54h3M32 16h25M32 36h25"/>',
+ cart:'<path d="M10 15h8l7 31h35l8-23H22"/><circle cx="32" cy="55" r="4"/><circle cx="55" cy="55" r="4"/><path d="M31 28h26M34 36h20"/>',
+ dns:'<circle cx="40" cy="34" r="10"/><circle cx="15" cy="14" r="5"/><circle cx="65" cy="14" r="5"/><circle cx="15" cy="57" r="5"/><circle cx="65" cy="57" r="5"/><path d="M22 18 33 28M58 18 47 28M22 53 33 41M58 53 47 41"/>',
+ app:'<rect x="12" y="9" width="56" height="48" rx="3"/><path d="M12 20h56M21 15h2M28 15h2M23 30h30M23 37h21"/><path d="m48 46 5 5 9-11"/>',
+ database:'<ellipse cx="40" cy="15" rx="24" ry="8"/><path d="M16 15v34c0 5 11 9 24 9s24-4 24-9V15M16 32c0 5 11 9 24 9s24-4 24-9M16 48c0 5 11 9 24 9s24-4 24-9"/>',
+ pin:'<path d="M40 60S18 38 18 25a22 22 0 1 1 44 0C62 38 40 60 40 60Z"/><circle cx="40" cy="25" r="7" fill="#79dfe4"/>',
+ tiles:'<rect x="12" y="10" width="23" height="19"/><rect x="40" y="10" width="27" height="19"/><rect x="12" y="34" width="23" height="23"/><rect x="40" y="34" width="27" height="23"/><path d="M17 19h12M45 19h17M17 44h12M45 44h17"/>',
+ route:'<path d="M15 52c13-28 22-28 32-8s17 8 18-15"/><circle cx="15" cy="52" r="5"/><circle cx="65" cy="29" r="5"/><path d="m57 21 8 8 8-8"/>'
+};
+function iconSvg(key){return '<svg viewBox="0 0 80 68" fill="none" stroke="#79dfe4" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="glow" aria-hidden="true">'+(svgIcons[key]||svgIcons.server)+'</svg>';}
+
+function choose(key){
+ const x=experiences[key];
+ $('#nf-path-title').textContent=x.title;
+ $('#nf-path').innerHTML='';
+
+ x.steps.forEach((s,i)=>{
+  const d=document.createElement('div');
+  d.className='step';
+  d.innerHTML='<div class="num">'+s.code+'</div><div class="step-visual">'+iconSvg(s.icon)+'</div><div class="name">'+s.name+'</div><p class="detail">'+s.detail+'</p>';
+  $('#nf-path').appendChild(d);
+
+  if(i<x.steps.length-1){
+   const a=document.createElement('div');
+   a.className='arrow';
+   a.textContent='→';
+   $('#nf-path').appendChild(a);
+  }
+ });
+
+ $('#nf-explain').textContent=x.explain;
+ $('#nf-failure').textContent=x.failure;
+
+ root.querySelectorAll('[data-choice]').forEach(b=>{
+  b.classList.toggle('active',b.dataset.choice===key);
+ });
+}
+
+root.querySelectorAll('[data-choice]').forEach(b=>{
+ b.onclick=()=>choose(b.dataset.choice);
+});
+
+$('#nf-reset').onclick=()=>{
+ choose('video');
+ $('#nf-choices').scrollIntoView({behavior:'smooth',block:'center'});
+};
+choose('video');
+
+function dateLabel(v){
+ if(!v)return 'TIME NOT PROVIDED';
+ const d=new Date(v);
+ return isNaN(d)?'TIME NOT PROVIDED':d.toLocaleString('ja-JP',{
+  month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false
+ });
+}
+
+function textVal(v){
+ if(typeof v==='string')return v;
+ if(v&&typeof v==='object')return v.title||v.name||'';
+ return '';
+}
+
+function normalizeGoogle(x){
+ const products=(x.affected_products||[]).map(textVal).filter(Boolean);
+ const impact=String(x.status_impact||x.severity||'').toUpperCase();
+ const status=impact.includes('OUTAGE')?'サービス停止':impact.includes('DISRUPTION')?'一部サービスに影響':impact.includes('INFORMATION')?'お知らせ':'障害情報';
+ const title=x.external_desc||x.service_name||products[0]||'Google Cloud のサービス';
+
+ return {
+  provider:'Google Cloud',
+  title,
+  status,
+  summary:x.end?'Google Cloud が復旧を報告しました。':'Google Cloud がこのサービスへの影響を報告しています。',
+  active:!x.end,
+  created:x.begin||x.created,
+  components:products,
+  url:'https://status.cloud.google.com/'
+ };
+}
+
+function normalizeCloudflare(x){
+ const comps=(x.components||[]).map(c=>c.name).filter(Boolean);
+ const active=!['resolved','completed','postmortem'].includes((x.status||'').toLowerCase());
+
+ return {
+  provider:'Cloudflare',
+  title:x.name||comps.join('・')||'Cloudflare のサービス',
+  status:active?'対応中':'復旧済み',
+  summary:active?'Cloudflare がサービスへの影響を報告しています。':'Cloudflare が復旧を報告しました。',
+  active,
+  created:x.created_at,
+  components:comps,
+  url:x.shortlink||'https://www.cloudflarestatus.com/'
+ };
+}
+
+function safe(s){
+ return String(s??'').replace(/[&<>"']/g,c=>({
+  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+ }[c]));
+}
+
+let latest=[];
+
+function renderIncidents(){
+ const timeline=$('#nf-timeline');
+ const impact=$('#nf-impact');
+
+ timeline.innerHTML='';
+ impact.innerHTML='';
+ const cutoff=Date.now()-7*24*60*60*1000;
+ const recent=latest.filter(i=>i.active||new Date(i.created||0).getTime()>=cutoff);
+ recent.sort((a,b)=>Number(b.active)-Number(a.active)||new Date(b.created||0)-new Date(a.created||0));
+ $('#nf-active').textContent=latest.filter(i=>i.active).length;
+ $('#nf-recent').textContent=recent.length;
+
+ if(!recent.length){
+  timeline.innerHTML='<div class="event unknown"><div class="tiny cyan">直近7日間の公開障害記録はありません</div><p class="text-sm mt-2">取得できた公開フィードの範囲では、現在進行中または直近7日間の障害記録は見つかりませんでした。</p></div>';
+  impact.innerHTML='<div class="tiny muted">影響対象の公開情報はありません</div><p class="muted text-xs mt-2">現在報告されている障害がないため、影響範囲は表示されていません。</p>';
+  return;
+ }
+
+ recent.slice(0,12).forEach(i=>{
+  const d=document.createElement('div');
+  d.className='event'+(!i.active?' resolved':'');
+  d.innerHTML=
+   '<div class="flex flex-wrap justify-between gap-2">'+
+   '<span class="tiny '+(i.active?'amber':'cyan')+'">'+safe(i.provider)+' / '+safe(i.status)+'</span>'+
+   '<span class="tiny muted">'+safe(dateLabel(i.created))+'</span>'+
+   '</div>'+
+   '<div class="text-sm font-bold mt-2">'+safe(i.title)+'</div>'+
+   '<div class="muted text-xs mt-2 leading-5">'+safe(i.summary)+'</div>';
+  timeline.appendChild(d);
+ });
+
+ const shown=recent.filter(i=>i.components.length);
+
+ if(!shown.length){
+  impact.innerHTML='<div class="tiny muted">影響コンポーネントの詳細は未記載です</div><p class="muted text-xs mt-2">障害記録はありますが、個別の影響コンポーネント名は公開データに含まれていません。</p>';
+  return;
+ }
+
+ shown.slice(0,10).forEach(i=>{
+  const d=document.createElement('div');
+  d.className='border-b py-3';
+  d.style.borderColor='#30474c';
+  d.innerHTML=
+   '<div class="tiny cyan">公式発表 / '+safe(i.provider)+'</div>'+ 
+   '<div class="text-sm font-bold mt-1">'+safe(i.title)+'</div>'+
+   '<div class="muted text-xs mt-2">影響対象：'+i.components.map(safe).join('・')+'</div>'+ 
+   '<a class="tiny inline-block mt-2" href="'+safe(i.url)+'" target="_blank" rel="noopener">公式ステータスページを見る ↗</a>';
+  impact.appendChild(d);
+ });
+}
+
+async function loadFeeds(){
+ $('#nf-check').textContent='公開フィードを取得しています…';
+ $('#nf-feeds').textContent='…';
+ $('#nf-active').textContent='…';
+ $('#nf-recent').textContent='…';
+
+ const feeds=[
+  {
+   name:'Google Cloud',
+   url:'https://status.cloud.google.com/incidents.json',
+   parse:d=>(Array.isArray(d)?d:[]).map(normalizeGoogle)
+  },
+  {
+   name:'Cloudflare',
+   url:'https://www.cloudflarestatus.com/api/v2/incidents.json',
+   parse:d=>(d.incidents||[]).map(normalizeCloudflare)
+  }
+ ];
+
+ const results=await Promise.all(feeds.map(async f=>{
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),9000);
+
+  try{
+   const r=await fetch(f.url,{signal:controller.signal,cache:'no-store'});
+   if(!r.ok)throw Error('HTTP '+r.status);
+   const data=await r.json();
+   return {ok:true,name:f.name,items:f.parse(data)};
+  }catch(e){
+   return {ok:false,name:f.name};
+  }finally{
+   clearTimeout(timer);
+  }
+ }));
+
+ $('#nf-feeds').textContent=results.filter(r=>r.ok).length+'/'+feeds.length;
+ latest=results.filter(r=>r.ok).flatMap(r=>r.items);
+ renderIncidents();
+
+ results.filter(r=>!r.ok).forEach(r=>{
+  const d=document.createElement('div');
+  d.className='event unknown';
+  d.innerHTML=
+   '<div class="tiny muted">'+safe(r.name)+' のフィードに接続できませんでした</div>'+ 
+   '<p class="muted text-xs mt-2">ブラウザの通信制限や一時的なネットワーク状態により取得できませんでした（サービス停止を意味するものではありません）。</p>';
+  $('#nf-timeline').appendChild(d);
+ });
+
+ $('#nf-check').textContent=
+  '最終確認 '+new Date().toLocaleTimeString('ja-JP')+
+  ' / '+results.filter(r=>r.ok).length+' ソース取得完了';
+}
+
+$('#nf-refresh').onclick=loadFeeds;
+loadFeeds();
+setInterval(loadFeeds,300000);
+
+})();
+</script>
+</body>
+</html>
